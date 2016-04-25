@@ -55,4 +55,18 @@ describe("SAO server", () => {
       });
     });
   });
+
+  describe("GET method", () => {
+    it("reads all SAO characters on a GET request", (done) => {
+      request("localhost:" + this.port)
+        .get("/api/saochars")
+        .end((err, res) => {
+          expect(err).to.eql(null);
+          expect(res).to.have.status(200);
+          expect(Array.isArray(res.body)).to.eql(true);
+          expect(res.body.length).to.eql(0);
+          done();
+        });
+    });
+  });
 });
