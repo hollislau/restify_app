@@ -101,5 +101,16 @@ describe("SAO server", () => {
           done();
         });
     });
+
+    it("deletes the SAO character on a DELETE request", (done) => {
+      request("localhost:" + this.port)
+        .delete("/api/saochars/" + this.saoChar._id)
+        .end((err, res) => {
+          expect(err).to.eql(null);
+          expect(res).to.have.status(200);
+          expect(res.body.msg).to.eql("SAO character deleted!");
+          done();
+        });
+    });
   });
 });
