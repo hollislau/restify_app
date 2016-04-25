@@ -6,16 +6,16 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 const request = chai.request;
 const mongoose = require("mongoose");
-const SaoChar = require(__dirname + "/../models/sao_char");
+const FantasyChar = require(__dirname + "/../models/fantasy_char");
 const server = require(__dirname + "/../server");
 
-describe("SAO server", () => {
+describe("Fantasy server", () => {
   before((done) => {
     this.portBackup = process.env.PORT;
     this.mongoUriBackup = process.env.MONGODB_URI;
     this.port = process.env.PORT = 1234;
-    process.env.MONGODB_URI = "mongodb://localhost/sao_test";
-    this.saoServer = server(this.port, () => {
+    process.env.MONGODB_URI = "mongodb://localhost/fantasy_test";
+    this.fantasyServer = server(this.port, () => {
       done();
     });
   });
@@ -25,7 +25,7 @@ describe("SAO server", () => {
     process.env.MONGODB_URI = this.mongoUriBackup;
     mongoose.connection.db.dropDatabase(() => {
       mongoose.connection.close(() => {
-        this.saoServer.close(() => {
+        this.fantasyServer.close(() => {
           done();
         });
       });
@@ -37,9 +37,9 @@ describe("SAO server", () => {
       mongoose.connection.db.dropDatabase(() => done());
     });
 
-    it("creates a new SAO character on a POST request", (done) => {
+    it("creates a new fantasy character on a POST request", (done) => {
       request("localhost:" + this.port)
-      .post("/api/saochars")
+      .post("/api/fantasychars")
       .send({
         name: "Asuna",
         gender: "F",
@@ -57,9 +57,9 @@ describe("SAO server", () => {
   });
 
   describe("GET method", () => {
-    it("reads all SAO characters on a GET request", (done) => {
+    it("reads all fantasy characters on a GET request", (done) => {
       request("localhost:" + this.port)
-        .get("/api/saochars")
+        .get("/api/fantasychars")
         .end((err, res) => {
           expect(err).to.eql(null);
           expect(res).to.have.status(200);
@@ -72,23 +72,23 @@ describe("SAO server", () => {
 
   describe("PUT and DELETE methods", () => {
     before((done) => {
-      var newSaoChar = new SaoChar({
+      var newFantasyChar = new FantasyChar({
         name: "Kirito",
         gender: "M",
         weapon: "Dual swords"
       });
 
-      newSaoChar.save((err, data) => {
+      newFantasyChar.save((err, data) => {
         if (err) return process.stderr.write(err + "\n");
 
-        this.saoChar = data;
+        this.fantasyChar = data;
         done();
       });
     });
 
-    it("updates the SAO character on a PUT request", (done) => {
+    it("updates the fantasy character on a PUT request", (done) => {
       request("localhost:" + this.port)
-        .put("/api/saochars/" + this.saoChar._id)
+        .put("/api/fantasychars/" + this.fantasyChar._id)
         .send({
           name: "Lisbeth",
           gender: "F",
@@ -97,18 +97,18 @@ describe("SAO server", () => {
         .end((err, res) => {
           expect(err).to.eql(null);
           expect(res).to.have.status(200);
-          expect(res.body.msg).to.eql("SAO character updated!");
+          expect(res.body.msg).to.eql("Fantasy character updated!");
           done();
         });
     });
 
-    it("deletes the SAO character on a DELETE request", (done) => {
+    it("deletes the fantasy character on a DELETE request", (done) => {
       request("localhost:" + this.port)
-        .delete("/api/saochars/" + this.saoChar._id)
+        .delete("/api/fantasychars/" + this.fantasyChar._id)
         .end((err, res) => {
           expect(err).to.eql(null);
           expect(res).to.have.status(200);
-          expect(res.body.msg).to.eql("SAO character deleted!");
+          expect(res.body.msg).to.eql("Fantasy character deleted!");
           done();
         });
     });
