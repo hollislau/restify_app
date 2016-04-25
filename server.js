@@ -1,7 +1,9 @@
 const restify = require("restify");
 const server = restify.createServer();
 const mongoose = require("mongoose");
+
 server.use(restify.bodyParser());
+
 require(__dirname + "/routes/sao_chars_router")(server);
 
 module.exports = function (port, cb) {
