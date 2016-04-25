@@ -69,4 +69,37 @@ describe("SAO server", () => {
         });
     });
   });
+
+  describe("PUT and DELETE methods", () => {
+    before((done) => {
+      var newSaoChar = new SaoChar({
+        name: "Kirito",
+        gender: "M",
+        weapon: "Dual swords"
+      });
+
+      newSaoChar.save((err, data) => {
+        if (err) return process.stderr.write(err + "\n");
+
+        this.saoChar = data;
+        done();
+      });
+    });
+
+    it("updates the SAO character on a PUT request", (done) => {
+      request("localhost:" + this.port)
+        .put("/api/saochars/" + this.saoChar._id)
+        .send({
+          name: "Lisbeth",
+          gender: "F",
+          weapon: "Mace"
+        })
+        .end((err, res) => {
+          expect(err).to.eql(null);
+          expect(res).to.have.status(200);
+          expect(res.body.msg).to.eql("SAO character updated!");
+          done();
+        });
+    });
+  });
 });
