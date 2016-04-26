@@ -24,7 +24,7 @@ describe("Fantasy server", () => {
     process.env.PORT = this.portBackup;
     process.env.MONGODB_URI = this.mongoUriBackup;
     mongoose.connection.db.dropDatabase(() => {
-      mongoose.connection.close(() => {
+      mongoose.disconnect(() => {
         this.fantasyServer.close(() => {
           done();
         });

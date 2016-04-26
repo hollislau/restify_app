@@ -10,9 +10,9 @@ The schema for a character is as follows:
   weapon: String
 }
 ```
-New characters will be stored in a `fantasychars` collection in a `fantasy` MongoDB database. After creating them, you can return a list of all characters in your collection by submitting a GET request to the path shown above. You may UPDATE or DELETE your characters by submitting requests to the path followed by the MongoDB ID number of the character you wish to update/delete. For example:
+New characters will be stored in a `fantasychars` collection in a `fantasy` MongoDB database. After creating them, you can return a list of all characters in your collection by submitting a GET request to the path shown above. You may submit PUT or DELETE requests to the path followed by the MongoDB ID number of the character you wish to update/delete. For example:
 ```
-UPDATE http://localhost:3000/api/fantasychars/:id
+PUT http://localhost:3000/api/fantasychars/:id
 DELETE http://localhost:3000/api/fantasychars/:id
 ```
 Enjoy!
